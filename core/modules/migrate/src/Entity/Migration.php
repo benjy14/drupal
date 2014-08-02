@@ -326,15 +326,7 @@ class Migration extends ConfigEntityBase implements MigrationInterface, Requirem
       $required_migrations = \Drupal::entityManager()->getStorage('migration')->loadMultiple($this->requirements);
       // Check if the dependencies are in good shape.
       foreach ($required_migrations as $required_migration) {
-        // If the dependent source migration has no IDs then no mappings can
-        // be recorded thus it is impossible to see whether the migration ran.
-        if (!$required_migration->getSourcePlugin()->getIds()) {
-          return FALSE;
-        }
-
-        // If the dependent migration has not processed any record, it means the
-        // dependency requirements are not met.
-        if (!$required_migration->getIdMap()->processedCount()) {
+        if (!$required_migration->isComplete()) {
           return FALSE;
         }
       }
@@ -344,6 +336,40 @@ class Migration extends ConfigEntityBase implements MigrationInterface, Requirem
     }
 
     return TRUE;
+  }
+
+  /**
+   * Set the migration status.
+   *
+   * @param int $status
+   *   One of the RESULT_* constants.
+   */
+  public function setMigrationStatus($status) {
+    \Drupal::state()->set($this->id, $status);
+  }
+
+  /**
+   * Get the current migration status.
+   *
+   * @return int
+   *   The current migration status. Defaults to RESULT_INCOMPLETE.
+   */
+  public function getMigrationStatus() {
+    $status = \Drupal::state()->get($this->id);
+    if (is_null($status)) {
+      return static::RESULT_INCOMPLETE;
+    }
+    return $status;
+  }
+
+  /**
+   * Check if this migration is complete.
+   *
+   * @return bool
+   *   TRUE if this migration is complete otherwise FALSE.
+   */
+  public function isComplete() {
+    return $this->getMigrationStatus() === static::RESULT_COMPLETED;
   }
 
 }

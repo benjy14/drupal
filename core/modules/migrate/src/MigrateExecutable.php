@@ -333,6 +333,7 @@ class MigrateExecutable {
      */
     #$this->progressMessage($return);
 
+    $this->migration->setMigrationStatus($return);
     return $return;
   }
 

@@ -102,4 +102,10 @@ interface MigrationInterface extends ConfigEntityInterface {
    */
   public function saveHighwater($highwater);
 
+  /**
+   * Check if a migration is complete.
+   *
+   * @return bool
+   */
+  public function isComplete();
 }
