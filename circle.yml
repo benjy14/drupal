@@ -11,6 +11,7 @@ general:
 dependencies:
   override:
     - wget https://github.com/drush-ops/drush/archive/master.zip
+    - unzip master.zip
     - cd drush-master && composer install && ln -s `pwd`/drush /home/ubuntu/bin/drush
 
     # Disable this because of a bug in drush.
