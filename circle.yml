@@ -21,8 +21,14 @@ dependencies:
     - a2ensite drupal
     - a2enmod rewrite
     - sudo service apache2 restart
+
+    - mkdir sites/default/files
+    - chmod -R 777 sites/default/files
+
     - drush sql-create --db-url="mysql://root:@127.0.0.1/drupal" -y
     - drush si standard install_configure_form.update_status_module='array(FALSE,FALSE)' --db-url=mysql://root:@127.0.0.1/drupal -y
+
+    - drush en -y simpletest
 test:
   override:
     - sudo -u www-data /home/ubuntu/.phpenv/shims/php ./core/scripts/run-tests.sh --dburl mysql://root:@127.0.0.1/drupal --verbose --color --php /home/ubuntu/.phpenv/shims/php --concurrency 12 --url http://drupal.dev --all
