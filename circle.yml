@@ -33,7 +33,7 @@ dependencies:
     - drush en -y simpletest
 
     # Increase the php memory limit.
-    - echo "memory_limit = 256M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memo
+    - echo "memory_limit = 512M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memory.ini
 test:
   override:
     - sudo -u www-data /home/ubuntu/.phpenv/shims/php ./core/scripts/run-tests.sh --dburl mysql://root:@127.0.0.1/drupal --verbose --color --php /home/ubuntu/.phpenv/shims/php --concurrency 12 --url http://drupal.dev --all
