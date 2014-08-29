@@ -9,11 +9,15 @@ general:
     - "app/sites/default/files/simpletest/verbose"
 
 dependencies:
+  pre:
+    - composer global require drush/drush:dev-master
   post:
     - cp vhost /etc/apache2/sites-available/drupal
     - a2ensite drupal
     - a2enmod rewrite
     - sudo service apache2 restart
+    - drush sql-create --db-url="mysql://root:@127.0.0.1/drupal" -y
+    - drush si --db-url=mysql://root:@127.0.0.1/drupal -y
 test:
   override:
-    - sudo -u www-data php ./core/scripts/run-tests.sh --url http://drupal.dev/ --all
+    - sudo -u www-data php ./core/scripts/run-tests.sh --dburl mysql://root:@127.0.0.1/drupal --verbose --color --php /home/ubuntu/.phpenv/shims/php --concurrency 12 --url http://drupal.dev --all
