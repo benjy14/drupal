@@ -10,8 +10,12 @@ general:
 
 dependencies:
   override:
-    - rm composer.lock composer.json
-    - composer global require drush/drush:dev-master
+    - wget https://github.com/drush-ops/drush/archive/master.zip
+    - cd drush-master && composer install && ln -s `pwd`/drush /home/ubuntu/bin/drush
+
+    # Disable this because of a bug in drush.
+#    - composer global require drush/drush:dev-master
+
     - cp vhost /etc/apache2/sites-available/drupal
     - a2ensite drupal
     - a2enmod rewrite
