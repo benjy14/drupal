@@ -17,18 +17,23 @@ dependencies:
     # Disable this because of a bug in drush.
 #    - composer global require drush/drush:dev-master
 
+    # Setup apache.
     - cp vhost /etc/apache2/sites-available/drupal
     - a2ensite drupal
     - a2enmod rewrite
     - sudo service apache2 restart
 
+    # Create some drupal folders.
     - mkdir sites/default/files
     - chmod -R 777 sites/default/files
 
+    # Setup the drupal db
     - drush sql-create --db-url="mysql://root:@127.0.0.1/drupal" -y
     - drush si standard install_configure_form.update_status_module='array(FALSE,FALSE)' --db-url=mysql://root:@127.0.0.1/drupal -y
-
     - drush en -y simpletest
+
+    # Increase the php memory limit.
+    - echo "memory_limit = 256M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memo
 test:
   override:
     - sudo -u www-data /home/ubuntu/.phpenv/shims/php ./core/scripts/run-tests.sh --dburl mysql://root:@127.0.0.1/drupal --verbose --color --php /home/ubuntu/.phpenv/shims/php --concurrency 12 --url http://drupal.dev --all
