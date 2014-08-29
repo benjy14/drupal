@@ -1,0 +1,24 @@
+machine:
+  timezone:
+    Australia/Perth
+  php:
+    version: 5.4.19
+  hosts:
+    drupal.dev: 127.0.0.1
+
+general:
+  artifacts:
+    - "app/sites/default/files/simpletest/verbose"
+
+dependencies:
+  cache_directories:
+    - vendor
+    - bin
+  post:
+    - cp vhost /etc/apache2/sites-available/drupal
+    - a2ensite drupal
+    - a2enmod rewrite
+    - sudo service apache2 restart
+test:
+  override:
+    - sudo -u www-data php ./core/scripts/run-tests.sh --url http://drupal.dev/ --all
