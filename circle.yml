@@ -9,9 +9,8 @@ general:
     - "app/sites/default/files/simpletest/verbose"
 
 dependencies:
-  pre:
-    - composer global require drush/drush:dev-master
   post:
+    - composer global require drush/drush:dev-master
     - cp vhost /etc/apache2/sites-available/drupal
     - a2ensite drupal
     - a2enmod rewrite
