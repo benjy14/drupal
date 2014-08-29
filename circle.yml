@@ -9,6 +9,7 @@ general:
     - "app/sites/default/files/simpletest/verbose"
 
 dependencies:
+  pre: rm composer.json composer.lock
   post:
     - composer global require drush/drush:dev-master
     - cp vhost /etc/apache2/sites-available/drupal
