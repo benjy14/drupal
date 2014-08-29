@@ -1,6 +1,4 @@
 machine:
-  timezone:
-    Australia/Perth
   php:
     version: 5.4.19
   hosts:
@@ -11,9 +9,6 @@ general:
     - "app/sites/default/files/simpletest/verbose"
 
 dependencies:
-  cache_directories:
-    - vendor
-    - bin
   post:
     - cp vhost /etc/apache2/sites-available/drupal
     - a2ensite drupal
